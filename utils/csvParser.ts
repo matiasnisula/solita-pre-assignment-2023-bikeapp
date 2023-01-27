@@ -1,24 +1,30 @@
 import csv from "csv-parser";
 import fs from "fs";
 
-const parseCSV = (path: string, callback: (data: unknown) => void): void => {
-  console.log("parsing csv..");
-  fs.createReadStream(path)
-    .pipe(
-      csv([
-        "departure",
-        "return",
-        "departureStationId",
-        "departureStationName",
-        "returnStationId",
-        "returnStationName",
-        "coveredDistance",
-        "duration",
-      ])
-    )
-    .on("data", (data) => callback(data))
-    .on("end", () => {
-      console.log("done parsing..");
+const parseCSV = async (
+  path: string,
+  columnNames: Array<string>,
+  parseDataPoint: (data: unknown) => object | null
+) => {
+  const resultArr: Array<unknown> = [];
+  console.log("reading csv..");
+  try {
+    await new Promise((resolve, reject) => {
+      fs.createReadStream(path)
+        .pipe(csv(columnNames))
+        .on("data", (data) => {
+          const parsedData = parseDataPoint(data);
+          if (parsedData) {
+            resultArr.push(parsedData);
+          }
+        })
+        .on("end", resolve)
+        .on("error", reject);
     });
+  } catch (error) {
+    console.error(error);
+  }
+  return resultArr;
 };
+
 export default parseCSV;
