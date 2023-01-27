@@ -1,5 +1,6 @@
 import http from "http";
 import { connectToDatabase } from "./db";
+import { initDBfromCsv } from "./utils/initDbData";
 
 const port = 3000;
 
@@ -11,6 +12,7 @@ const server = http.createServer((_req, res) => {
 
 const start = async (): Promise<void> => {
   await connectToDatabase();
+  await initDBfromCsv();
   server.listen(port, () => {
     console.log(`Server running at port: ${port}`);
   });
