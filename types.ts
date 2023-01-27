@@ -7,7 +7,7 @@ export type JourneyDataPoint = {
   duration: number;
 };
 
-export type Station = {
+export type StationData = {
   id: number;
   name: string;
   address: string;
