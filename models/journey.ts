@@ -30,14 +30,12 @@ Journey.init(
     },
     coveredDistance: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       validate: {
         min: 10,
       },
     },
     duration: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       validate: {
         min: 10,
       },

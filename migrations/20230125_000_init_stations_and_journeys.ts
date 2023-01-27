@@ -48,16 +48,14 @@ export = {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      coveredDistance: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      covered_distance: {
+        type: DataTypes.DOUBLE,
         validate: {
           min: 10,
         },
       },
       duration: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         validate: {
           min: 10,
         },
