@@ -1,6 +1,7 @@
 import parseCSV from "./csvParser";
 import { Station, Journey } from "../models";
-import { parseNewStation, parseNewJourneyDataPoint } from "./validators";
+import { parseNewStation } from "./validateStation";
+import { parseNewJourneyDataPoint } from "./validateJourney";
 import { StationData, JourneyDataPoint } from "../types";
 
 const colNamesJourney = [
