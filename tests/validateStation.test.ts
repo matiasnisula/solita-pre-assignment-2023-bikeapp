@@ -170,3 +170,42 @@ describe("isValidStation(csvLine) returns", () => {
     expect(result).toBe(true);
   });
 });
+
+describe("parseNewStation(csvLine) returns", () => {
+  test("object with properties id, name, address, city, operator, capacity, x, y when valid input", () => {
+    const validStation = {
+      ID: 10,
+      name: "abc",
+      osoite: "abc A",
+      kaupunki: "helsinki",
+      operaattor: "aaaa",
+      kapasiteetti: 10,
+      x: "10.2",
+      y: "12.3",
+    };
+    const result = parseNewStation(validStation);
+    expect(result).not.toBeNull();
+    expect(result?.id).toBeDefined();
+    expect(result?.name).toBeDefined();
+    expect(result?.address).toBeDefined();
+    expect(result?.city).toBeDefined();
+    expect(result?.operator).toBeDefined();
+    expect(result?.capacity).toBeDefined();
+    expect(result?.x).toBeDefined();
+    expect(result?.y).toBeDefined();
+  });
+
+  test("null for invalid input", () => {
+    const invalidStationWithoutId = {
+      name: "abc",
+      osoite: "abc A",
+      operaattor: "aaaa",
+      kapasiteetti: 10,
+      x: "10.2",
+      y: "12.3",
+    };
+    const result = parseNewStation(invalidStationWithoutId);
+    console.log(result);
+    expect(result).toBeNull();
+  });
+});
