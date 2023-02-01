@@ -33,7 +33,9 @@ const colNamesStation = [
 
 const saveStations = async (stations: Array<StationData>) => {
   try {
-    const result = await Station.bulkCreate(stations);
+    const result = await Station.bulkCreate(stations, {
+      validate: true,
+    });
     console.log("station.result.length:", result.length);
   } catch (error) {
     console.error(error);
