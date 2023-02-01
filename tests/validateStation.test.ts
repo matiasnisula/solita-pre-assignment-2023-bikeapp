@@ -218,7 +218,6 @@ describe("parseNewStation(csvLine) returns", () => {
       y: "12.3",
     };
     const result = parseNewStation(invalidStationWithoutId);
-    console.log(result);
     expect(result).toBeNull();
   });
 });
