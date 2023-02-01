@@ -17,7 +17,7 @@ const isNumber = (number: unknown): boolean => {
 };
 
 const isInteger = (number: unknown): boolean => {
-  if (!number || !Number.isInteger(number)) {
+  if (!number || !Number.isInteger(Number(number))) {
     return false;
   }
   return true;

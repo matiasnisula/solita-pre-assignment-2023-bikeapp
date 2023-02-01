@@ -7,8 +7,8 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
   test("false for missing departure date", () => {
     const journeyWithoutDeparture = {
       return: new Date(),
-      departureStationId: 10,
-      returnStationId: 8,
+      departureStationId: "10",
+      returnStationId: "8",
       coveredDistance: 25,
       duration: 40,
     };
@@ -20,7 +20,7 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
     const journeyWithInvalidDepartureAndReturn = {
       departure: "01/02/aaa",
       return: "02/02/abc",
-      departureStationId: 10,
+      departureStationId: "10",
       returnStationId: 8,
       coveredDistance: 25,
       duration: 40,
@@ -35,7 +35,7 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
     const journeyWithInvalidDepartureAndReturn = {
       departure: "02/02/2023",
       return: "01/02/2023",
-      departureStationId: 10,
+      departureStationId: "10",
       returnStationId: 8,
       coveredDistance: 25,
       duration: 40,
@@ -50,7 +50,7 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
     const journeyWithoutDepartureStationId = {
       departure: "01/01/2023",
       return: "02/01/2023",
-      returnStationId: 8,
+      returnStationId: "8",
       coveredDistance: 25,
       duration: 40,
     };
@@ -77,7 +77,7 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
     const journeyWithoutReturnStationId = {
       departure: "01/01/2023",
       return: "02/01/2023",
-      departureStationId: 10,
+      departureStationId: "10",
       coveredDistance: 25,
       duration: 40,
     };
@@ -102,7 +102,7 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
     const journeyWithInvalidDistance = {
       departure: "01/01/2023",
       return: "02/01/2023",
-      departureStationId: 10,
+      departureStationId: "10",
       returnStationId: 4,
       coveredDistance: "as",
       duration: 40,
@@ -117,7 +117,7 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
       return: "02/01/2023",
       departureStationId: 10,
       returnStationId: 4,
-      coveredDistance: 9,
+      coveredDistance: "9",
       duration: 40,
     };
     const result = isValidJourneyDataPoint(journeyWithInvalidDistance);
@@ -152,12 +152,14 @@ describe("isValidJourneyDataPoint(csvLine) returns", () => {
 
   test("true for valid journey", () => {
     const validJourney = {
-      departure: "01/01/2023",
-      return: "02/01/2023",
-      departureStationId: 10,
-      returnStationId: 4,
-      coveredDistance: 11,
-      duration: 16,
+      departure: "2021-05-27T15:00:26",
+      return: "2021-05-27T15:05:06",
+      departureStationId: "625",
+      departureStationName: "Suomenlahdentie",
+      returnStationId: "611",
+      returnStationName: "Matinkartanontie",
+      coveredDistance: "1105",
+      duration: "279",
     };
     const result = isValidJourneyDataPoint(validJourney);
     expect(result).toBe(true);
