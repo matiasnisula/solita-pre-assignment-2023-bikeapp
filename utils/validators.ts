@@ -16,4 +16,18 @@ const isNumber = (number: unknown): boolean => {
   return true;
 };
 
-export { isString, isDate, isNumber };
+const isUndefinedOrNumber = (number: unknown): boolean => {
+  if (number && isNaN(Number(number))) {
+    return false;
+  }
+  return true;
+};
+
+const isUndefinedOrString = (str: unknown): boolean => {
+  if (str && !isString(str)) {
+    return false;
+  }
+  return true;
+};
+
+export { isString, isDate, isNumber, isUndefinedOrNumber, isUndefinedOrString };

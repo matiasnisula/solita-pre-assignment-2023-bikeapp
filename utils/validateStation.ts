@@ -1,13 +1,21 @@
 import { StationData } from "../types";
-import { isString, isNumber } from "./validators";
+import {
+  isString,
+  isNumber,
+  isUndefinedOrNumber,
+  isUndefinedOrString,
+} from "./validators";
 
+// takes input object (line from csv file) and check if is valid station
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isValidStation = (object: any): boolean => {
   if (
     !isNumber(object.ID) ||
     !isString(object.name) ||
     !isString(object.osoite) ||
-    !isNumber(object.kapasiteetti) ||
+    !isUndefinedOrString(object.city) ||
+    !isUndefinedOrString(object.operaattor) ||
+    !isUndefinedOrNumber(object.kapasiteetti) ||
     !isNumber(object.x) ||
     !isNumber(object.y)
   ) {
