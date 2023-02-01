@@ -15,11 +15,25 @@ const isValidDuration = (duration: unknown): boolean => {
   return true;
 };
 
+const departureBeforeReturn = (
+  departureDate: string,
+  returnDate: string
+): boolean => {
+  if (Date.parse(departureDate) > Date.parse(returnDate)) {
+    return false;
+  }
+  return true;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isValidJourneyDataPoint = (object: any): boolean => {
   if (
     !isDate(object.departure) ||
     !isDate(object.return) ||
+    !departureBeforeReturn(
+      object.departure as string,
+      object.return as string
+    ) ||
     !isValidId(object.departureStationId) ||
     !isValidId(object.returnStationId) ||
     !isValidDistance(object.coveredDistance) ||
