@@ -13,7 +13,7 @@ const isValidStation = (object: any): boolean => {
     !isNumber(object.ID) ||
     !isString(object.name) ||
     !isString(object.osoite) ||
-    !isUndefinedOrString(object.city) ||
+    !isUndefinedOrString(object.kaupunki) ||
     !isUndefinedOrString(object.operaattor) ||
     !isUndefinedOrNumber(object.kapasiteetti) ||
     !isNumber(object.x) ||

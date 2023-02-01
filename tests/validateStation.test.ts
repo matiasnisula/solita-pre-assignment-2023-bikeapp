@@ -1,6 +1,6 @@
-import { isValidStation } from "../utils/validateStation";
+import { isValidStation, parseNewStation } from "../utils/validateStation";
 
-describe("isValidStation(station) returns", () => {
+describe("isValidStation(csvLine) returns", () => {
   test("false for station without id", () => {
     const stationWithoutId = {
       name: "Station",
@@ -81,7 +81,7 @@ describe("isValidStation(station) returns", () => {
       ID: 10,
       name: "abc",
       osoite: "abc A",
-      city: 10,
+      kaupunki: 10,
       kapasiteetti: 10,
       x: "10.2",
       y: "12.3",
@@ -94,7 +94,7 @@ describe("isValidStation(station) returns", () => {
       ID: 10,
       name: "abc",
       osoite: "abc A",
-      city: "Helsinki",
+      kaupunki: "Helsinki",
       operaattor: 4,
       kapasiteetti: 10,
       x: "10.2",
@@ -160,7 +160,7 @@ describe("isValidStation(station) returns", () => {
       ID: 10,
       name: "abc",
       osoite: "abc A",
-      city: "helsinki",
+      kaupunki: "helsinki",
       operaattor: "aaaa",
       kapasiteetti: 10,
       x: "10.2",
