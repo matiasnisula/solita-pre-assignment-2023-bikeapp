@@ -26,6 +26,19 @@ describe("isValidStation(csvLine) returns", () => {
     expect(result).toBe(false);
   });
 
+  test("false for station with invalid id", () => {
+    const stationWithInvalidId = {
+      ID: -1,
+      name: "Station",
+      osoite: "abc A 13",
+      kapasiteetti: 10,
+      x: "10.2",
+      y: "12.3",
+    };
+    const result = isValidStation(stationWithInvalidId);
+    expect(result).toBe(false);
+  });
+
   test("false for station without name", () => {
     const stationWithoutName = {
       ID: 10,
