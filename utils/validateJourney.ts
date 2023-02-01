@@ -1,5 +1,5 @@
 import { JourneyDataPoint } from "../types";
-import { isDate, isNumber } from "./validators";
+import { isDate, isNumber, isValidId } from "./validators";
 
 const isValidDistance = (number: unknown): boolean => {
   if (!isNumber(number) || Number(number) < 10) {
@@ -20,8 +20,8 @@ const isValidJourneyDataPoint = (object: any): boolean => {
   if (
     !isDate(object.departure) ||
     !isDate(object.return) ||
-    !isNumber(object.departureStationId) ||
-    !isNumber(object.returnStationId) ||
+    !isValidId(object.departureStationId) ||
+    !isValidId(object.returnStationId) ||
     !isValidDistance(object.coveredDistance) ||
     !isValidDuration(object.duration)
   ) {

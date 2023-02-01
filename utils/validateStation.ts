@@ -2,7 +2,8 @@ import { StationData } from "../types";
 import {
   isString,
   isNumber,
-  isUndefinedOrNumber,
+  isValidId,
+  isUndefinedOrIntegerGreaterThanZero,
   isUndefinedOrString,
 } from "./validators";
 
@@ -10,12 +11,12 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isValidStation = (object: any): boolean => {
   if (
-    !isNumber(object.ID) ||
+    !isValidId(object.ID) ||
     !isString(object.name) ||
     !isString(object.osoite) ||
     !isUndefinedOrString(object.kaupunki) ||
     !isUndefinedOrString(object.operaattor) ||
-    !isUndefinedOrNumber(object.kapasiteetti) ||
+    !isUndefinedOrIntegerGreaterThanZero(object.kapasiteetti) ||
     !isNumber(object.x) ||
     !isNumber(object.y)
   ) {
