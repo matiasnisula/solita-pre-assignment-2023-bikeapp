@@ -104,12 +104,12 @@ describe("isValidStation(csvLine) returns", () => {
     expect(result).toBe(false);
   });
 
-  test("false for station with invalid capacity data type", () => {
+  test("false for station with invalid capacity", () => {
     const stationWithWrongCapacity = {
       ID: 10,
       name: "abc",
       osoite: "abc A",
-      kapasiteetti: "invalid",
+      kapasiteetti: -2,
       x: "10.2",
       y: "12.3",
     };
