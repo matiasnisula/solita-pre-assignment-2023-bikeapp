@@ -1,20 +1,25 @@
-import http from "http";
+import express from "express";
+import cors from "cors";
+import "express-async-errors";
+import journeyRouter from "./routes/journey";
+import { PORT, INIT_FROM_CSV } from "./config";
 import { connectToDatabase } from "./db";
 import { initDBfromCsv } from "./utils/initDbData";
 
-const port = 3000;
+const app = express();
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+app.use(cors());
+app.use(express.json());
 
-const server = http.createServer((_req, res) => {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/plain");
-  res.end("Hello World\n");
-});
+app.use("/api/journeys", journeyRouter);
 
 const start = async (): Promise<void> => {
   await connectToDatabase();
-  await initDBfromCsv();
-  server.listen(port, () => {
-    console.log(`Server running at port: ${port}`);
+  if (INIT_FROM_CSV) {
+    await initDBfromCsv();
+  }
+  app.listen(PORT, () => {
+    console.log(`Server running at port: ${PORT}`);
   });
 };
 
