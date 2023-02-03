@@ -2,11 +2,11 @@ import Journey from "./journey";
 import Station from "./station";
 
 Journey.belongsTo(Station, {
-  as: "startStation",
+  as: "departureStation",
   foreignKey: "departureStationId",
 });
 Journey.belongsTo(Station, {
-  as: "endStation",
+  as: "returnStation",
   foreignKey: "returnStationId",
 });
 Station.hasMany(Journey, {
