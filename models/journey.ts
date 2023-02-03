@@ -18,16 +18,6 @@ Journey.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    departureStationId: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      references: { model: "stations", key: "id" },
-    },
-    returnStationId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: { model: "stations", key: "id" },
-    },
     coveredDistance: {
       type: DataTypes.INTEGER,
       validate: {
@@ -45,7 +35,7 @@ Journey.init(
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: "journey",
+    modelName: "Journey",
   }
 );
 

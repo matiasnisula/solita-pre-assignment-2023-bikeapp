@@ -41,7 +41,7 @@ Station.init(
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: "station",
+    modelName: "Station",
   }
 );
 
