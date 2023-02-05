@@ -59,4 +59,5 @@ export {
   isUndefinedOrIntegerGreaterThanZero,
   isUndefinedOrString,
   isValidId,
+  isInteger,
 };
