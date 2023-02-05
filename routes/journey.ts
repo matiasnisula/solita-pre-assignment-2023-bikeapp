@@ -1,15 +1,22 @@
 import express from "express";
 import { Journey, Station } from "../models";
 import { Op } from "sequelize";
+import { isInteger } from "../utils/validators";
 
 const journeyRouter = express.Router();
 
-//?limit=50&after=ID
+const PAGE_SIZE = 80;
+
 journeyRouter.get("/", async (req, res) => {
-  const limit = req.query.limit;
-  const afterId = req.query.after;
-  console.log("limit:", limit);
-  console.log("afterId:", afterId);
+  if (!isInteger(req.query.page) || !isInteger(req.query.lastItemId)) {
+    return res
+      .json({
+        error: "Provide query page as integer",
+      })
+      .status(404);
+  }
+  const page = req.query.page;
+  const lastItemId = req.query.lastItemId;
   const journeys = await Journey.findAll({
     attributes: {
       exclude: ["departureStationId", "returnStationId", "departure", "return"],
@@ -26,12 +33,19 @@ journeyRouter.get("/", async (req, res) => {
     ],
     where: {
       id: {
-        [Op.lt]: 10,
+        [Op.gt]: Number(lastItemId),
       },
     },
+    order: [["id", "ASC"]],
+    limit: PAGE_SIZE,
   });
-
-  res.json(journeys);
+  const pageInfo = {
+    hasNext: journeys.length < PAGE_SIZE ? false : true,
+    hasPrev: Number(page) === 0 ? false : true,
+    lastItemId: journeys[journeys.length - 1].get("id"),
+    pageSize: PAGE_SIZE,
+  };
+  return res.json({ journeys, pageInfo });
 });
 
 export default journeyRouter;
