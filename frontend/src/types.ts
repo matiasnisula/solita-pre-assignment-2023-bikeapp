@@ -1,4 +1,4 @@
-export type Station = {
+export type StationEntry = {
   id: number;
   name: string;
   address: string;
@@ -13,8 +13,15 @@ export type JourneyEntry = {
   id: number;
   departureDate?: string;
   returnDate?: string;
-  departureStation: Station;
-  returnStation: Station;
+  departureStation: StationEntry;
+  returnStation: StationEntry;
   coveredDistance: number;
   duration: number;
+};
+
+export type PageInfo = {
+  hasNext: boolean;
+  hasPrev: boolean;
+  pageSize: number;
+  lastItemId: number;
 };
