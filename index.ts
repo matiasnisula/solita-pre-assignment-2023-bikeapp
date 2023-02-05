@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "express-async-errors";
 import journeyRouter from "./routes/journey";
+import stationRouter from "./routes/station";
 import { PORT, INIT_FROM_CSV } from "./config";
 import { connectToDatabase } from "./db";
 import { initDBfromCsv } from "./utils/initDbData";
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/stations", stationRouter);
 app.use("/api/journeys", journeyRouter);
 
 const start = async (): Promise<void> => {
