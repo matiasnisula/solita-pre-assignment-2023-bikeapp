@@ -15,8 +15,22 @@ journeyRouter.get("/", async (req, res) => {
       })
       .status(404);
   }
-  const page = req.query.page;
-  const lastItemId = req.query.lastItemId;
+  let where;
+
+  if (req.query.previousPage === "true") {
+    where = {
+      id: {
+        [Op.lt]: Number(req.query.firstItemId),
+      },
+    };
+  } else {
+    where = {
+      id: {
+        [Op.gt]: Number(req.query.lastItemId),
+      },
+    };
+  }
+
   const journeys = await Journey.findAll({
     attributes: {
       exclude: ["departureStationId", "returnStationId", "departure", "return"],
@@ -31,20 +45,25 @@ journeyRouter.get("/", async (req, res) => {
         as: "returnStation",
       },
     ],
-    where: {
-      id: {
-        [Op.gt]: Number(lastItemId),
-      },
-    },
-    order: [["id", "ASC"]],
+    where,
+    order: [["id", req.query.previousPage === "true" ? "DESC" : "ASC"]],
     limit: PAGE_SIZE,
   });
+
+  if (req.query.previousPage) {
+    journeys.sort((a: Journey, b: Journey) => {
+      return Number(a.getDataValue("id")) - Number(b.getDataValue("id"));
+    });
+  }
+
   const pageInfo = {
     hasNext: journeys.length < PAGE_SIZE ? false : true,
-    hasPrev: Number(page) === 0 ? false : true,
+    hasPrev: Number(req.query.page) === 0 ? false : true,
+    firstItemId: journeys[0].get("id"),
     lastItemId: journeys[journeys.length - 1].get("id"),
     pageSize: PAGE_SIZE,
   };
+
   return res.json({ journeys, pageInfo });
 });
 
