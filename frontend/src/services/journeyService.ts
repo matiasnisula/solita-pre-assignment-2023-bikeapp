@@ -1,7 +1,6 @@
 import axios from "axios";
 import { JourneyEntry, PageInfo } from "../types";
-
-const url = "http://localhost:3001/api/journeys";
+import { BACKEND_BASE_URL } from "../config";
 
 type AxiosResponse = {
   journeys: JourneyEntry[];
@@ -14,10 +13,13 @@ export const getAll = async (params: {
   firstItemId: number;
   previousPage: boolean;
 }) => {
-  const result = await axios.get<AxiosResponse>(url, {
-    params: {
-      ...params,
-    },
-  });
+  const result = await axios.get<AxiosResponse>(
+    `${BACKEND_BASE_URL}/api/journeys`,
+    {
+      params: {
+        ...params,
+      },
+    }
+  );
   return result.data;
 };
