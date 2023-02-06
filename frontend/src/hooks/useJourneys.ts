@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { JourneyEntry, PageInfo } from "../types";
+import * as journeyService from "../services/journeyService";
+import { JourneyEntry } from "../types";
 
-const useJourneys = (url: string, page?: number) => {
+const useJourneys = (page: number) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [journeys, setJourneys] = useState<JourneyEntry[]>([]);
@@ -12,29 +12,22 @@ const useJourneys = (url: string, page?: number) => {
   const [firstItemId, setFirstItemId] = useState(0);
   const [getPrevPage, setGetPrevPage] = useState(false);
 
-  type AxiosResponse = {
-    journeys: JourneyEntry[];
-    pageInfo: PageInfo;
-  };
-
   const fetchData = async () => {
     try {
       setLoading(true);
       setError(false);
-      const result = await axios.get<AxiosResponse>(url, {
-        params: {
-          page,
-          lastItemId,
-          firstItemId,
-          previousPage: getPrevPage,
-        },
+      const data = await journeyService.getAll({
+        page,
+        lastItemId,
+        firstItemId,
+        previousPage: getPrevPage,
       });
-      setHasNext(result.data.pageInfo.hasNext);
-      setHasPrev(result.data.pageInfo.hasPrev);
-      setLastItemId(result.data.pageInfo.lastItemId);
-      setFirstItemId(result.data.pageInfo.firstItemId);
-      setJourneys(result.data.journeys);
-      console.log("result.data:", result.data);
+      setHasNext(data.pageInfo.hasNext);
+      setHasPrev(data.pageInfo.hasPrev);
+      setLastItemId(data.pageInfo.lastItemId);
+      setFirstItemId(data.pageInfo.firstItemId);
+      setJourneys(data.journeys);
+      console.log("result.data:", data);
       setLoading(false);
     } catch (error: unknown) {
       console.log("ERROR:", error);

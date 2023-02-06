@@ -3,13 +3,11 @@ import useJourneys from "../hooks/useJourneys";
 import Journey from "./Journey";
 
 const JourneyList = () => {
-  const journeyUrl = "http://localhost:3001/api/journeys";
   const [pageNumber, setPageNumber] = useState(0);
 
-  const { journeys, loading, hasNext, hasPrev, setGetPrevPage } = useJourneys(
-    journeyUrl,
-    pageNumber
-  );
+  const { journeys, loading, hasNext, hasPrev, setGetPrevPage } =
+    useJourneys(pageNumber);
+
   if (loading) {
     return <div>Loading...</div>;
   }
