@@ -1,11 +1,40 @@
-import { StationEntry } from "../types";
+import { useRef, useCallback, useState } from "react";
+import useStations from "../hooks/useStations";
 
-interface StationListProps {
-  stationList: Array<StationEntry>;
-  lastStationRef?: (node: HTMLTableRowElement) => void;
-}
+const StationList = () => {
+  const stationUrl = "http://localhost:3001/api/stations";
+  const [pageNumberStations, setPageNumberStations] = useState(0);
 
-const StationList = ({ stationList, lastStationRef }: StationListProps) => {
+  const { stations, loading, hasNext } = useStations(
+    stationUrl,
+    pageNumberStations
+  );
+
+  // infinite scrolling
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastStationRef = useCallback(
+    (node: HTMLTableRowElement) => {
+      if (loading) {
+        return;
+      }
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNext) {
+          setPageNumberStations((prev) => prev + 1);
+        }
+      });
+
+      if (node) {
+        observer.current.observe(node);
+      }
+      console.log("node:", node);
+    },
+    [loading, hasNext]
+  );
+
   return (
     <div>
       <h1>Stations</h1>
@@ -20,8 +49,8 @@ const StationList = ({ stationList, lastStationRef }: StationListProps) => {
           </tr>
         </thead>
         <tbody>
-          {stationList.map((station, i) => {
-            if (stationList.length === i + 1) {
+          {stations.map((station, i) => {
+            if (stations.length === i + 1) {
               return (
                 <tr key={station.id} ref={lastStationRef}>
                   <td>{station.id}</td>

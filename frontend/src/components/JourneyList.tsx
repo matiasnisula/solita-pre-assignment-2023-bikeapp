@@ -1,6 +1,5 @@
 import { useState } from "react";
 import useJourneys from "../hooks/useJourneys";
-import { JourneyEntry } from "../types";
 import Journey from "./Journey";
 
 const JourneyList = () => {
