@@ -24,4 +24,5 @@ export type PageInfo = {
   hasPrev: boolean;
   pageSize: number;
   lastItemId: number;
+  firstItemId: number;
 };

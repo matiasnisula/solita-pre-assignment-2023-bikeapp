@@ -1,21 +1,11 @@
 import { useRef, useCallback, useState } from "react";
-import useJourneys from "./hooks/useJourneys";
 import useStations from "./hooks/useStations";
 import JourneyList from "./components/JourneyList";
 import StationList from "./components/StationList";
 
 const App = () => {
-  const journeyUrl = "http://localhost:3001/api/journeys";
   const stationUrl = "http://localhost:3001/api/stations";
   const [pageNumberStations, setPageNumberStations] = useState(0);
-  const [pageNumberJourneys, setPageNumberJourneys] = useState(0);
-
-  const {
-    journeys,
-    loading: loadingJourneys,
-    hasNext: hasNextJourneys,
-    hasPrev: hasPrevJourneys,
-  } = useJourneys(journeyUrl, pageNumberJourneys);
 
   const {
     stations,
@@ -25,7 +15,7 @@ const App = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastStationRef = useCallback(
-    (node: HTMLElement) => {
+    (node: HTMLTableRowElement) => {
       if (loadingStations) {
         return;
       }
@@ -47,12 +37,9 @@ const App = () => {
     [loadingStations, hasNextStations]
   );
 
-  console.log("data:", stations);
-  console.log("pageNumber:", pageNumberStations);
-
   return (
     <div>
-      <JourneyList journeyList={journeys} />
+      <JourneyList />
       <StationList stationList={stations} lastStationRef={lastStationRef} />
     </div>
   );

@@ -9,6 +9,8 @@ const useJourneys = (url: string, page?: number) => {
   const [hasNext, setHasNext] = useState(false);
   const [hasPrev, setHasPrev] = useState(false);
   const [lastItemId, setLastItemId] = useState(0);
+  const [firstItemId, setFirstItemId] = useState(0);
+  const [getPrevPage, setGetPrevPage] = useState(false);
 
   type AxiosResponse = {
     journeys: JourneyEntry[];
@@ -23,12 +25,15 @@ const useJourneys = (url: string, page?: number) => {
         params: {
           page,
           lastItemId,
+          firstItemId,
+          previousPage: getPrevPage,
         },
       });
       setHasNext(result.data.pageInfo.hasNext);
       setHasPrev(result.data.pageInfo.hasPrev);
       setLastItemId(result.data.pageInfo.lastItemId);
-      setJourneys(journeys.concat(result.data.journeys));
+      setFirstItemId(result.data.pageInfo.firstItemId);
+      setJourneys(result.data.journeys);
       console.log("result.data:", result.data);
       setLoading(false);
     } catch (error: unknown) {
@@ -41,7 +46,7 @@ const useJourneys = (url: string, page?: number) => {
     fetchData();
   }, [page]);
 
-  return { journeys, error, loading, hasNext, hasPrev };
+  return { journeys, error, loading, hasNext, hasPrev, setGetPrevPage };
 };
 
 export default useJourneys;

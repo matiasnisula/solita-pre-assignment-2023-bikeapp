@@ -1,11 +1,19 @@
+import { useState } from "react";
+import useJourneys from "../hooks/useJourneys";
 import { JourneyEntry } from "../types";
 import Journey from "./Journey";
 
-interface JourneyListProps {
-  journeyList: Array<JourneyEntry>;
-}
+const JourneyList = () => {
+  const journeyUrl = "http://localhost:3001/api/journeys";
+  const [pageNumber, setPageNumber] = useState(0);
 
-const JourneyList = ({ journeyList }: JourneyListProps) => {
+  const { journeys, loading, hasNext, hasPrev, setGetPrevPage } = useJourneys(
+    journeyUrl,
+    pageNumber
+  );
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
       <h1>Journeys</h1>
@@ -20,7 +28,7 @@ const JourneyList = ({ journeyList }: JourneyListProps) => {
           </tr>
         </thead>
         <tbody>
-          {journeyList.map((journey) => {
+          {journeys.map((journey) => {
             return (
               <Journey
                 key={journey.id}
@@ -36,6 +44,28 @@ const JourneyList = ({ journeyList }: JourneyListProps) => {
           })}
         </tbody>
       </table>
+      <div>
+        {hasPrev && (
+          <button
+            onClick={() => {
+              setPageNumber((prev) => prev - 1);
+              setGetPrevPage(true);
+            }}
+          >
+            Prev
+          </button>
+        )}
+        {hasNext && (
+          <button
+            onClick={() => {
+              setPageNumber((prev) => prev + 1);
+              setGetPrevPage(false);
+            }}
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 };
