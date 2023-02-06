@@ -2,13 +2,9 @@ import { useRef, useCallback, useState } from "react";
 import useStations from "../hooks/useStations";
 
 const StationList = () => {
-  const stationUrl = "http://localhost:3001/api/stations";
-  const [pageNumberStations, setPageNumberStations] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
 
-  const { stations, loading, hasNext } = useStations(
-    stationUrl,
-    pageNumberStations
-  );
+  const { stations, loading, hasNext } = useStations(pageNumber);
 
   // infinite scrolling
   const observer = useRef<IntersectionObserver | null>(null);
@@ -23,7 +19,7 @@ const StationList = () => {
 
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasNext) {
-          setPageNumberStations((prev) => prev + 1);
+          setPageNumber((prev) => prev + 1);
         }
       });
 

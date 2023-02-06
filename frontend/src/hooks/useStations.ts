@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { StationEntry, PageInfo } from "../types";
+import * as stationService from "../services/stationService";
+import { StationEntry } from "../types";
 
-const useStations = (url: string, page?: number) => {
+const useStations = (page: number) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [stations, setStations] = useState<StationEntry[]>([]);
@@ -10,26 +10,16 @@ const useStations = (url: string, page?: number) => {
   const [hasPrev, setHasPrev] = useState(false);
   const [lastItemId, setLastItemId] = useState(0);
 
-  type AxiosResponse = {
-    stations: StationEntry[];
-    pageInfo: PageInfo;
-  };
-
   const fetchData = async () => {
     try {
       setLoading(true);
       setError(false);
-      const result = await axios.get<AxiosResponse>(url, {
-        params: {
-          page,
-          lastItemId,
-        },
-      });
-      setHasNext(result.data.pageInfo.hasNext);
-      setHasPrev(result.data.pageInfo.hasPrev);
-      setLastItemId(result.data.pageInfo.lastItemId);
-      setStations(stations.concat(result.data.stations));
-      console.log("result.data:", result.data);
+      const data = await stationService.getAll({ page, lastItemId });
+      setHasNext(data.pageInfo.hasNext);
+      setHasPrev(data.pageInfo.hasPrev);
+      setLastItemId(data.pageInfo.lastItemId);
+      setStations(stations.concat(data.stations));
+      console.log("data:", data);
       setLoading(false);
     } catch (error: unknown) {
       console.log("ERROR:", error);
