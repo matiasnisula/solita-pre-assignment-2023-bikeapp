@@ -1,11 +1,12 @@
 import { useRef, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useStations from "../hooks/useStations";
 
 const StationList = () => {
   const [pageNumber, setPageNumber] = useState(0);
 
   const { stations, loading, hasNext } = useStations(pageNumber);
-
+  const navigate = useNavigate();
   // infinite scrolling
   const observer = useRef<IntersectionObserver | null>(null);
   const lastStationRef = useCallback(
@@ -54,6 +55,11 @@ const StationList = () => {
                   <td>{station.address}</td>
                   <td>{station.city}</td>
                   <td>{station.capacity}</td>
+                  <td>
+                    <button onClick={() => navigate(`/${station.id}`)}>
+                      INFO
+                    </button>
+                  </td>
                 </tr>
               );
             }
@@ -64,6 +70,11 @@ const StationList = () => {
                 <td>{station.address}</td>
                 <td>{station.city}</td>
                 <td>{station.capacity}</td>
+                <td>
+                  <button onClick={() => navigate(`/stations/${station.id}`)}>
+                    INFO
+                  </button>
+                </td>
               </tr>
             );
           })}

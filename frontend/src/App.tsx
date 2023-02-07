@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import JourneyList from "./components/JourneyList";
 import StationList from "./components/StationList";
+import Station from "./components/Station";
 
 const App = () => {
   const padding = {
@@ -18,6 +19,7 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/journeys" element={<JourneyList />} />
+        <Route path="/stations/:id" element={<Station />} />
         <Route path="/stations" element={<StationList />} />
       </Routes>
     </BrowserRouter>
