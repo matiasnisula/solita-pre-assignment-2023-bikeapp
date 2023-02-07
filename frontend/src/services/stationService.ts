@@ -1,5 +1,5 @@
 import axios from "axios";
-import { StationEntry, PageInfo } from "../types";
+import { StationEntry, SingleStationViewEntry, PageInfo } from "../types";
 import { BACKEND_BASE_URL } from "../config";
 
 type AxiosResponse = {
@@ -15,6 +15,13 @@ export const getAll = async (params: { page: number; lastItemId: number }) => {
         ...params,
       },
     }
+  );
+  return result.data;
+};
+
+export const getById = async (id: number) => {
+  const result = await axios.get<SingleStationViewEntry>(
+    `${BACKEND_BASE_URL}/api/stations/${id}`
   );
   return result.data;
 };

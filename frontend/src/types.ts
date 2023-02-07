@@ -26,3 +26,8 @@ export type PageInfo = {
   lastItemId: number;
   firstItemId: number;
 };
+
+export interface SingleStationViewEntry extends StationEntry {
+  totalJourneysStarted: number;
+  totalJourneysEnded: number;
+}
