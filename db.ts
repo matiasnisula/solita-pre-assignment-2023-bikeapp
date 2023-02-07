@@ -1,13 +1,8 @@
-import { Dialect, Sequelize } from "sequelize";
+import { Sequelize } from "sequelize";
 import { Umzug, SequelizeStorage } from "umzug";
+import { DATABASE_URL } from "./config";
 
-const options = {
-  host: "localhost",
-  port: 5432,
-  dialect: "postgres" as Dialect,
-};
-
-const sequelize = new Sequelize("database", "admin", "admin", options);
+const sequelize = new Sequelize(DATABASE_URL);
 
 const runMigrations = async () => {
   const migrator = new Umzug({

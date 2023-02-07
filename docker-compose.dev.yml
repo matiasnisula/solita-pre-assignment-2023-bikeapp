@@ -17,3 +17,20 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  backend-dev:
+    image: backend-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./:/usr/src/backend
+    profiles:
+      - backend
+    ports:
+      - 3001:3001
+    container_name: backend-dev
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://admin:admin@db:5432/database
