@@ -1,6 +1,7 @@
 import express from "express";
 import { Station } from "../models";
 import { Op } from "sequelize";
+import { sequelize } from "../db";
 import { isInteger } from "../utils/validators";
 
 const stationRouter = express.Router();
@@ -34,6 +35,48 @@ stationRouter.get("/", async (req, res) => {
     pageSize: PAGE_SIZE,
   };
   return res.json({ stations, pageInfo });
+});
+
+stationRouter.get("/:id", async (req, res) => {
+  const id = req.params.id;
+
+  if (!isInteger(id)) {
+    return res.status(404).json({ error: "Invalid id" });
+  }
+
+  const result = await Station.findOne({
+    attributes: {
+      include: [
+        [
+          sequelize.literal(`(
+            SELECT COUNT(*)
+            FROM journeys
+            WHERE
+              journeys.departure_station_id = ${id}
+          )`),
+          "totalJourneysStarted",
+        ],
+        [
+          sequelize.literal(`(
+            SELECT COUNT(*)
+            FROM journeys
+            WHERE
+              journeys.return_station_id = ${id}
+          )`),
+          "totalJourneysEnded",
+        ],
+      ],
+    },
+    where: {
+      id: id,
+    },
+  });
+
+  if (!result) {
+    return res.status(404).json({ error: "No station found with given id" });
+  }
+
+  return res.json(result);
 });
 
 export default stationRouter;
