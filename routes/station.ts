@@ -45,6 +45,7 @@ stationRouter.get("/:id", async (req, res) => {
   }
 
   const result = await Station.findOne({
+    replacements: [id, id],
     attributes: {
       include: [
         [
@@ -52,7 +53,7 @@ stationRouter.get("/:id", async (req, res) => {
             SELECT COUNT(*)
             FROM journeys
             WHERE
-              journeys.departure_station_id = ${id}
+              journeys.departure_station_id=?
           )`),
           "totalJourneysStarted",
         ],
@@ -61,7 +62,7 @@ stationRouter.get("/:id", async (req, res) => {
             SELECT COUNT(*)
             FROM journeys
             WHERE
-              journeys.return_station_id = ${id}
+              journeys.return_station_id=?
           )`),
           "totalJourneysEnded",
         ],
